@@ -1,56 +1,62 @@
 <div align="center">
 
-# 🧠 Page-Allocation-Simulator
+# Page-Allocation-Simulator
 
-**Visualize how operating systems allocate memory pages — CLI + GUI.**
-
-[![Stack](https://img.shields.io/badge/stack-C%20%2B%20Python-8b5cf6?style=for-the-badge)](#)
-[![Status](https://img.shields.io/badge/status-stable-8b5cf6?style=for-the-badge)](#)
-[![PRs](https://img.shields.io/badge/PRs-welcome-8b5cf6?style=for-the-badge)](#contributing)
+[![C++](https://img.shields.io/badge/C%2B%2B-17-00599C?logo=c%2B%2B&logoColor=white)](https://isocpp.org)
+[![Python](https://img.shields.io/badge/GUI-tkinter-3776AB?logo=python&logoColor=white)](#cli--gui)
+[![License](https://img.shields.io/badge/license-MIT-8b5cf6)](#license)
 
 </div>
 
----
+`Page-Allocation-Simulator` is an interactive teaching tool for page-replacement
+algorithms. It runs FIFO, LRU, and Optimal on a reference string and shows,
+step by step, how the frame set evolves and where page faults occur. A C++
+terminal simulator does the work; a tkinter GUI wraps the same algorithms for
+a visual walkthrough.
 
-<div align="center">
+## Why
 
-| | |
-|---|---|
-| 🎯 **Purpose** | Simulate page-allocation / replacement strategies |
-| 🧩 **Stack** | C++ (core) · Python (GUI) |
-| 🌑 **Theme** | Dark / rich |
-| 📦 **Status** | Done |
+Page replacement is easiest to understand by watching frames fill and evict.
+The simulator prints each step with ANSI coloring (faults vs. hits) and the GUI
+animates the same trace, so the difference between FIFO, LRU, and Optimal is
+immediately visible rather than derived from a formula.
 
-</div>
+## What it implements
 
----
+- **FIFO** — evicts the oldest-loaded frame (cyclic pointer).
+- **LRU** — evicts the least-recently-used frame.
+- **Optimal** — evicts the frame whose next use is farthest away (needs the
+  full reference string; the theoretical best).
 
-## ✨ Features
+Each algorithm returns `(faults, hits, steps)` where every `step` records the
+page, the resulting frame set, and its status — the same structure feeds both
+the CLI trace and the GUI table.
 
-- ⚙️ **C++ engine** (`simulator.cpp`) — the allocation logic
-- 🖥️ **Python GUI** (`simulator_gui.py`) — watch allocations step by step
-- 🎓 Great for OS / memory-management coursework
+## CLI / GUI
 
-## 🚀 Quick start
+`simulator.cpp` — interactive, colored terminal simulator:
 
 ```bash
-g++ simulator.cpp -o simulator && ./simulator     # CLI
-python simulator_gui.py                            # GUI
+g++ -std=c++17 -Wall -o simulator simulator.cpp
+./simulator
 ```
 
-## 📁 Structure
+`simulator_gui.py` — tkinter front end over `solve_fifo` / `solve_lru` /
+`solve_optimal` (deque-based frame simulation), with a scrolled step log:
+
+```bash
+python simulator_gui.py
+```
+
+## Project structure
 
 ```
 Page-Allocation-Simulator/
-├── simulator.cpp       # core simulation
-├── simulator_gui.py    # GUI wrapper
-└── simulator/          # support / build
+├── simulator.cpp        # C++ terminal simulator (FIFO/LRU/Optimal)
+├── simulator_gui.py     # tkinter GUI over the same algorithms
+└── simulator/           # build / support
 ```
 
-## 🤝 Contributing
+## License
 
-PRs welcome — match the dark/rich README style.
-
-## 📜 License
-
-MIT © Yugank Rathore
+MIT
